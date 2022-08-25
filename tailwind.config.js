@@ -1,10 +1,23 @@
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        body: ['Montserrat', 'sans-serif'],
+        header: ['Messapia', 'sans-serif'],
+        Inter: ['Inter', 'sans-serif'],
+        alegreya: ['Alegreya', 'serif'],
+        inconsolata: ['Inconsolata', 'monospace'],
+        lora: ['Lora', 'serif'],
+      },
+      colors: {
+        midnight: '#1b2536',
+        seablue: '#003C54',
+      },
+    },
   },
   plugins: [],
-};
+}
