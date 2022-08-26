@@ -1,12 +1,27 @@
 import { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
 import { useContract, useSigner, useAccount } from 'wagmi'
+import { create } from 'ipfs-http-client'
 
 type FormData = {
   title: string
   article: string
   creatorAddress: string | undefined
 }
+
+const projectId = process.env.INFURA_PROJECT_ID
+const projectSecret = process.env.INFURA_PROJECT_SECRET
+const auth =
+  'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
+
+const client = create({
+  host: 'ipfs.infura.io',
+  protocol: 'https',
+  port: 5001,
+  headers: {
+    authorization: auth,
+  },
+})
 
 const Create: NextPage = () => {
   const {
@@ -18,6 +33,8 @@ const Create: NextPage = () => {
 
   const { data: signer, isError, isLoading } = useSigner()
   const { address } = useAccount()
+
+  console.log('client: ', client)
 
   const onSubmit = async () => {
     console.log('submit')
