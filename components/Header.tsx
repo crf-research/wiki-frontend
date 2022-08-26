@@ -17,7 +17,7 @@ const Header = () => {
   const { disconnect } = useDisconnect()
 
   return (
-    <div className="flex place-content-between items-center pt-20 pb-20 px-48">
+    <div className="flex place-content-between items-center pt-20 pb-16 px-48">
       <Link href="/" passHref>
         <span className="cursor-pointer font-bold text-6xl">📖</span>
       </Link>
