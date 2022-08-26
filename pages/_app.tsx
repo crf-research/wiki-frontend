@@ -15,7 +15,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider, webSocketProvider } = configureChains(
     defaultChains,
-    [alchemyProvider({ apiKey: 'yourAlchemyApiKey' }), publicProvider()]
+    [alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }), publicProvider()]
   )
   const client = createClient({
     autoConnect: true,
