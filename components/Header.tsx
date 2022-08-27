@@ -7,6 +7,7 @@ import {
   useEnsName,
 } from 'wagmi'
 import { shortenAddress } from '../helpers'
+import { UserIcon } from '@heroicons/react/outline'
 
 const Header = () => {
   const { connect, connectors, error, isLoading, pendingConnector } =
@@ -21,29 +22,34 @@ const Header = () => {
       <Link href="/" passHref>
         <span className="cursor-pointer font-bold text-6xl">📖</span>
       </Link>
-      {isConnected ? (
-        <button
-          className="bg-violet-300 py-2 px-4 rounded-lg text-white font-bold"
-          onClick={() => disconnect()}
-        >
-          {shortenAddress(address)}
-        </button>
-      ) : (
-        <div>
-          {connectors.map((connector) => (
-            <button
-              className="bg-violet-500 py-2 px-4 rounded-lg text-white font-bold"
-              disabled={!connector.ready}
-              key={connector.id}
-              onClick={() => connect({ connector })}
-            >
-              Connect
-            </button>
-          ))}
+      <div className="flex space-x-4 items-center">
+        {isConnected ? (
+          <button
+            className="bg-violet-300 py-2 px-4 rounded-lg text-white font-bold"
+            onClick={() => disconnect()}
+          >
+            {shortenAddress(address)}
+          </button>
+        ) : (
+          <div>
+            {connectors.map((connector) => (
+              <button
+                className="bg-violet-500 py-2 px-4 rounded-lg text-white font-bold"
+                disabled={!connector.ready}
+                key={connector.id}
+                onClick={() => connect({ connector })}
+              >
+                Connect
+              </button>
+            ))}
 
-          {error && <div>{error.message}</div>}
-        </div>
-      )}
+            {error && <div>{error.message}</div>}
+          </div>
+        )}
+        <Link href="/profile/xx" passHref>
+          <UserIcon className="h-8 w-8 text-slate-400 cursor-pointer hover:text-slate-200" />
+        </Link>
+      </div>
     </div>
   )
 }

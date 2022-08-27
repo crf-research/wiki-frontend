@@ -36,7 +36,7 @@ const Create: NextPage = () => {
 
   console.log('client: ', client)
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: any) => {
     console.log('submit')
     if (!signer) {
       alert('Please connect your wallet first.')
