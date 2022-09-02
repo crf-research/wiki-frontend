@@ -7,7 +7,6 @@ import {
   defaultChains,
   configureChains,
 } from 'wagmi'
-
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'

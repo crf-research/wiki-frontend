@@ -1,11 +1,20 @@
 import type { NextPage } from 'next'
 import ProfileArticle from '../../components/ProfileArticle'
+import { shortenAddress } from '../../helpers'
 
 const Profile: NextPage = () => {
   return (
     <div className="max-h-full space-y-8">
       <div className="text-center">
-        <h1 className="text-xl mb-10">Wallet Address</h1>
+        <h1 className="text-3xl font-semibold">John Doe</h1>
+        <h2 className="mb-10 text-slate-400 hover:underline hover:underline-offset-2">
+          <a
+            href="https://etherscan.io/address/0xd2832a92fa4b93b4024b3e9f9699cd1924d7780b"
+            target="_blank"
+          >
+            {shortenAddress('0xD2832A92Fa4b93b4024b3E9F9699cD1924D7780b')}
+          </a>
+        </h2>
         <div className="flex justify-center">
           <div className="text-justify w-2/5">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
