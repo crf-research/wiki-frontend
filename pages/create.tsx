@@ -34,13 +34,20 @@ const Create: NextPage = () => {
   const { data: signer, isError, isLoading } = useSigner()
   const { address } = useAccount()
 
-  console.log('client: ', client)
-
   const onSubmit = async (data: any) => {
-    console.log('submit')
+    data.creatorAddress = address
+    console.log('submit data: ', data)
+    setValue('creatorAddress', address)
     if (!signer) {
       alert('Please connect your wallet first.')
       return
+    }
+    try {
+      const { cid } = await client.add({ content: JSON.stringify(data) })
+      const url = `https://ipfs.io/ipfs/${cid}`
+      console.log('url: ', url)
+    } catch (err: any) {
+      console.log('error creating article:', err)
     }
   }
 
@@ -50,7 +57,7 @@ const Create: NextPage = () => {
       <div className="flex justify-center">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10 w-1/2">
           <div className="space-y-2">
-            <label className="font-semibold mb-2 text-xl block text-slate-300">
+            <label className="font-semibold mb-2 text-xl block text-slate-200">
               Title
             </label>
             <input
@@ -65,7 +72,7 @@ const Create: NextPage = () => {
             )}
           </div>
           <div>
-            <label className="font-semibold mb-2 text-xl block text-slate-300">
+            <label className="font-semibold mb-2 text-xl block text-slate-200">
               Article
             </label>
             <textarea
