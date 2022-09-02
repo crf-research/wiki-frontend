@@ -11,6 +11,7 @@ const Profile: NextPage = () => {
           <a
             href="https://etherscan.io/address/0xd2832a92fa4b93b4024b3e9f9699cd1924d7780b"
             target="_blank"
+            rel="noreferrer"
           >
             {shortenAddress('0xD2832A92Fa4b93b4024b3E9F9699cD1924D7780b')}
           </a>

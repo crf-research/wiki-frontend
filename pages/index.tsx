@@ -13,12 +13,12 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="space-x-16 mt-20">
-          <Link href="/create">
+          <Link href="/create" passHref>
             <button className="font-semibold text-xl bg-violet-500 rounded-md text-white px-4 py-2 w-28">
               Create
             </button>
           </Link>
-          <Link href="/article/xx">
+          <Link href="/article/xx" passHref>
             <button className="font-semibold text-xl bg-violet-500 rounded-md text-white px-4 py-2 w-28">
               Read
             </button>
