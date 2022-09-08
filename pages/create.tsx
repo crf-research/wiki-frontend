@@ -1,12 +1,7 @@
 import { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
-import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useSigner,
-  useAccount,
-} from 'wagmi'
+import { useDeprecatedContractWrite, useSigner, useAccount } from 'wagmi'
 import { create } from 'ipfs-http-client'
 import { GOERLI_ADDRESS, CONTRACT_ABI, GOERLI_CHAIN_ID } from '../constants'
 
@@ -34,22 +29,21 @@ const Create: NextPage = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<FormData>()
 
   const { data: signer } = useSigner()
   const { address } = useAccount()
 
-  const { config, error, isError } = usePrepareContractWrite({
+  const { write } = useDeprecatedContractWrite({
     addressOrName: GOERLI_ADDRESS,
+    chainId: GOERLI_CHAIN_ID,
     contractInterface: CONTRACT_ABI,
     functionName: 'createArticle',
     args: [ipfsHash],
-  })
-
-  const { write } = useContractWrite({
-    ...config,
+    overrides: {
+      from: address,
+    },
     onMutate({ args, overrides }) {
       console.log('Mutate', { args, overrides })
       if (!signer) {
@@ -85,8 +79,7 @@ const Create: NextPage = () => {
 
   useEffect(() => {
     if (ipfsHash) {
-      console.log('ipfs hash: ', ipfsHash)
-      write?.()
+      write()
     }
   }, [ipfsHash])
 
