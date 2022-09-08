@@ -1,11 +1,5 @@
 import Link from 'next/link'
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-} from 'wagmi'
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { shortenAddress } from '../helpers'
 import { UserIcon } from '@heroicons/react/outline'
 
@@ -13,8 +7,6 @@ const Header = () => {
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect()
   const { address, isConnected } = useAccount()
-  const { data: ensAvatar } = useEnsAvatar({ addressOrName: address })
-  const { data: ensName } = useEnsName({ address })
   const { disconnect } = useDisconnect()
 
   return (

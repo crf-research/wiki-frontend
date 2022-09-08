@@ -1,12 +1,18 @@
 import { NextPage } from 'next'
 import { useForm } from 'react-hook-form'
-import { useContract, useSigner, useAccount } from 'wagmi'
+import { useState, useEffect } from 'react'
+import {
+  usePrepareContractWrite,
+  useContractWrite,
+  useSigner,
+  useAccount,
+} from 'wagmi'
 import { create } from 'ipfs-http-client'
+import { GOERLI_ADDRESS, CONTRACT_ABI, GOERLI_CHAIN_ID } from '../constants'
 
 type FormData = {
   title: string
   article: string
-  creatorAddress: string | undefined
 }
 
 const projectId = process.env.INFURA_PROJECT_ID
@@ -24,6 +30,7 @@ const client = create({
 })
 
 const Create: NextPage = () => {
+  const [ipfsHash, setIpfsHash] = useState<string>('')
   const {
     register,
     handleSubmit,
@@ -31,25 +38,57 @@ const Create: NextPage = () => {
     formState: { errors },
   } = useForm<FormData>()
 
-  const { data: signer, isError, isLoading } = useSigner()
+  const { data: signer } = useSigner()
   const { address } = useAccount()
+
+  const { config, error, isError } = usePrepareContractWrite({
+    addressOrName: GOERLI_ADDRESS,
+    contractInterface: CONTRACT_ABI,
+    functionName: 'createArticle',
+    args: [ipfsHash],
+  })
+
+  const { write } = useContractWrite({
+    ...config,
+    onMutate({ args, overrides }) {
+      console.log('Mutate', { args, overrides })
+      if (!signer) {
+        alert('Connect your wallet first!')
+        return
+      }
+    },
+    onError(error) {
+      console.log('Error', error)
+    },
+    onSuccess(data) {
+      console.log('Success', data)
+    },
+  })
 
   const onSubmit = async (data: any) => {
     data.creatorAddress = address
-    console.log('submit data: ', data)
-    setValue('creatorAddress', address)
     if (!signer) {
       alert('Please connect your wallet first.')
       return
     }
     try {
-      const { cid } = await client.add({ content: JSON.stringify(data) })
+      const { cid } = await client.add({
+        content: JSON.stringify(data),
+      })
+      setIpfsHash(cid.toString())
       const url = `https://ipfs.io/ipfs/${cid}`
       console.log('url: ', url)
     } catch (err: any) {
       console.log('error creating article:', err)
     }
   }
+
+  useEffect(() => {
+    if (ipfsHash) {
+      console.log('ipfs hash: ', ipfsHash)
+      write?.()
+    }
+  }, [ipfsHash])
 
   return (
     <div className="max-h-full">
